@@ -1,49 +1,38 @@
 require "next_bus/version"
+require "next_bus/bus_times"
 
 module NextBus
-  BUS_TIMES = ['1731', '0700', '1705', '1657']
+  BUS_TIMES = %w{1615 1637 1657 1707 1717 1737 1745 1805 1825 1845 1905}
 
   def self.run(*args)
     bus_times = BusTimes.new(BUS_TIMES)
 
-    if args.include?('-a')
-      bus_times.list
+    if args.include?('-a') || args.include?('--all')
+      if list = bus_times.list
+        'Next bus times: ' + list.join(', ')
+      else
+        'There are no more buses today.'
+      end
+    elsif args.include?('-m') || args.include?('--mins')
+      if mins_until = bus_times.mins_till
+      "Next bus is in #{mins_until} mins."
+      else
+        'There are no more buses today.'
+      end
+    elsif args.length == 0
+      if next_bus = bus_times.next_bus
+        "Next bus is at #{next_bus}"
+      else
+        'There are no more buses today.'
+      end
     else
-      bus_times.next_bus
+'Usage:
+    next_bus [OPTIONS]
+
+Options:
+    -m, [--mins]              # Minutes till next bus
+    -a, [--all]               # List all available buses
+    -h, [--help]              # Show this message'
     end
-  end
-end
-
-class BusTimes
-  attr_reader :times
-
-  def initialize(bus_times)
-    @times = bus_times.sort!
-  end
-
-  def next_bus
-    temp_times = self.times.dup
-    temp_times << time_now
-    temp_times.sort!
-
-    index = temp_times.index(time_now)
-    self.times[index]
-  end
-
-  def list
-    temp_times = times.dup
-
-    temp_times << time_now
-    temp_times.sort!
-
-    index = temp_times.index(time_now)
-    from = times.length - index
-    times[-from..from]
-  end
-
-  private
-
-  def time_now
-    time = Time.now.strftime("%I%M")
   end
 end
