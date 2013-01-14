@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = NextBus::VERSION
   gem.authors       = ["Dave Elliott"]
   gem.email         = ["ddazza@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  # gem.description   = ''
+  gem.summary       = 'Ouputs the time until the next bus'
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)

@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+require 'next_bus'
+
+# resolve bin path, ignoring symlinks
+require "pathname"
+bin_file = Pathname.new(__FILE__).realpath
+
+puts NextBus.run(*ARGV)
